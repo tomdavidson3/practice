@@ -79,7 +79,7 @@ public class BoggleSolver {
 
         BoggleBoard board = new BoggleBoard(bestBoard, 4);
 
-        BoggleSolver solver = new BoggleSolver(loadDictionary("/Users/e23537/Documents/dictionary-yawl.txt"), board);
+        BoggleSolver solver = new BoggleSolver(loadDictionary(args[0]), board);
 
         board.printBoard();
         System.out.println(solver.findAllWords());
