@@ -5,37 +5,37 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class TreeUtils {
-    static void traversePreOrder(BinaryNode node) {
+    public static void traversePreOrder(BinaryNode node) {
         if (node == null) {
             return;
         }
 
-        System.out.println(node.value);
-        traversePreOrder(node.left);
-        traversePreOrder(node.right);
+        System.out.println(node.getValue());
+        traversePreOrder(node.getLeft());
+        traversePreOrder(node.getRight());
     }
 
-    static void traverseInOrder(BinaryNode node) {
+    public static void traverseInOrder(BinaryNode node) {
         if (node == null) {
             return;
         }
 
-        traverseInOrder(node.left);
-        System.out.println(node.value);
-        traverseInOrder(node.right);
+        traverseInOrder(node.getLeft());
+        System.out.println(node.getValue());
+        traverseInOrder(node.getRight());
     }
 
-    static void traversePostOrder(BinaryNode node) {
+    public static void traversePostOrder(BinaryNode node) {
         if (node == null) {
             return;
         }
 
-        traversePostOrder(node.left);
-        traversePostOrder(node.right);
-        System.out.println(node.value);
+        traversePostOrder(node.getLeft());
+        traversePostOrder(node.getRight());
+        System.out.println(node.getValue());
     }
 
-    static void dfs(BinaryNode root) {
+    public static void dfs(BinaryNode root) {
         if (root == null) {
             return;
         }
@@ -45,14 +45,14 @@ public class TreeUtils {
 
         while (!stack.isEmpty()) {
             BinaryNode node = stack.pop();
-            dfs(node.left);
-            dfs(node.right);
-            System.out.println(node.value);
+            dfs(node.getLeft());
+            dfs(node.getRight());
+            System.out.println(node.getValue());
 
         }
     }
 
-    static void bfs(BinaryNode root) {
+    public static void bfs(BinaryNode root) {
         if (root == null) {
             return;
         }
@@ -62,30 +62,30 @@ public class TreeUtils {
 
         while (!queue.isEmpty()) {
             BinaryNode n = queue.remove();
-            System.out.println(n.value);
-            if (n.left != null) {
-                queue.add(n.left);
+            System.out.println(n.getValue());
+            if (n.getLeft() != null) {
+                queue.add(n.getLeft());
             }
-            if (n.right != null) {
-                queue.add(n.right);
+            if (n.getRight() != null) {
+                queue.add(n.getRight());
             }
         }
     }
 
-    static int count(BinaryNode node) {
+    public static int count(BinaryNode node) {
         if (node == null) {
             return 0;
         }
 
-        return count(node.left) + count(node.right) + 1;
+        return count(node.getLeft()) + count(node.getRight()) + 1;
     }
 
-    static int height(BinaryNode node) {
+    public static int height(BinaryNode node) {
         if (node == null) {
             return -1;
         }
 
-        return Math.max(height(node.left) + 1, height(node.right) + 1);
+        return Math.max(height(node.getLeft()) + 1, height(node.getRight()) + 1);
     }
 
     public static void main(String[] args) {
