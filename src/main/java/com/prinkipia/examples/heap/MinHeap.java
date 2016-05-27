@@ -28,7 +28,7 @@ public class MinHeap {
             return;
         }
 
-        if (node.getParent().getValue().compareTo(node.getValue()) > 0) {
+        if (node.getParent().getValue().compareTo(node.getValue()) <= 0) {
             // dont need to do anything, parent is already less than right node
             return;
         }
