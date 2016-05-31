@@ -40,16 +40,12 @@ public class MinHeap {
 
     public static void main(String[] args) {
         MinHeap minHeap = new MinHeap();
-        minHeap.insert(1);
-        minHeap.insert(2);
-        minHeap.insert(5);
-        minHeap.insert(3);
-        minHeap.insert(4);
-        minHeap.insert(-10000);
-        minHeap.insert(20);
-        minHeap.insert(2000);
+        minHeap.insert(1.0);
+        minHeap.insert(-1.0);
+        minHeap.insert(3.0);
+        minHeap.insert(4.0);
+        minHeap.insert(10.0);
 
-        System.out.println(minHeap.getMin());
         TreeUtils.bfs(minHeap.root);
     }
 }
