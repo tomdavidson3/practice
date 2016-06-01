@@ -2,6 +2,10 @@ package com.prinkipia.examples.string;
 
 public class OneAway {
     static boolean numEdits(String source, String target) {
+        if (source == null || target == null) {
+            throw new NullPointerException();
+        }
+
         if (source.equals(target)) {
             return true;
         }
@@ -21,12 +25,15 @@ public class OneAway {
     }
 
     private static boolean checkInsert(final String source, final String target) {
+        if (target.startsWith(source)) {
+            return true;
+        }
+
         int j = 0;
         for (int i = 0; i < source.length(); i++) {
-            if (source.charAt(i) == target.charAt(j)) {
+            if (source.charAt(i) != target.charAt(i + j)) {
                 j++;
             }
-            j++;
         }
         return j == 1;
     }
@@ -42,8 +49,11 @@ public class OneAway {
     }
 
     public static void main(String[] args) {
+        System.out.println(numEdits("",""));
         System.out.println(numEdits("pale", "pale"));
+        System.out.println(numEdits("pale", "pales"));
         System.out.println(numEdits("pales", "pale"));
+        System.out.println(numEdits("pale", "spale"));
         System.out.println(numEdits("pale", "bale"));
         System.out.println(numEdits("pale", "bake"));
         System.out.println(numEdits("pale", "ba"));
