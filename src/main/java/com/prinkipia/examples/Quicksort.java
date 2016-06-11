@@ -1,19 +1,4 @@
-package com.prinkipia.examples;/*
- *   ******************************************************************
- *   * *
- *   * *   This material is the confidential, unpublished property
- *   * *   of Fair Isaac Corporation.  Receipt or possession
- *   * *   of this material does not convey rights to divulge,
- *   * *   reproduce, use, or allow others to use it without
- *   * *   the specific written authorization of Fair Isaac
- *   * *   Corporation and use must conform strictly to the
- *   * *   license agreement.
- *   * *
- *   * *   Copyright (c) Fair Isaac Corporation, 2016
- *   * *   All Rights Reserved.
- *   * *
- *   * ******************************************************************
- */
+package com.prinkipia.examples;
 
 import java.util.Random;
 
@@ -70,7 +55,7 @@ public class Quicksort {
     }
 
     public static void main(String[] args) {
-        int numElements = 100;
+        int numElements = 10000000;
 
         int[] valuesToSort = new int[numElements];
         Random r = new Random(1967);
@@ -81,12 +66,12 @@ public class Quicksort {
 
         Quicksort sorter = new Quicksort(valuesToSort);
         System.out.println("initial values");
-        sorter.printValues();
+        //sorter.printValues();
         System.out.println();
 
         sorter.sort(0, valuesToSort.length - 1);
 
         System.out.println("\nfinal values");
-        sorter.printValues();
+        //sorter.printValues();
     }
 }
