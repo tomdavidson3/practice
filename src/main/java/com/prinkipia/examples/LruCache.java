@@ -33,7 +33,6 @@ public class LruCache<K, V> implements Cache<K, V> {
 
     private void evictLeastRecentlyUsed() {
         K key = timestamps.remove();
-        timestamps.remove();
         cache.remove(key);
     }
 
