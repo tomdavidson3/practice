@@ -24,15 +24,15 @@ public class MergeSort {
         }
     }
 
-    private static void merge(int[] array, int[] tempMergArr, int lowerIndex, int middle, int higherIndex) {
+    private static void merge(int[] array, int[] tempMergArr, int left, int middle, int right) {
 
-        for (int i = lowerIndex; i <= higherIndex; i++) {
+        for (int i = left; i <= right; i++) {
             tempMergArr[i] = array[i];
         }
-        int i = lowerIndex;
+        int i = left;
         int j = middle + 1;
-        int k = lowerIndex;
-        while (i <= middle && j <= higherIndex) {
+        int k = left;
+        while (i <= middle && j <= right) {
             if (tempMergArr[i] <= tempMergArr[j]) {
                 array[k] = tempMergArr[i];
                 i++;
