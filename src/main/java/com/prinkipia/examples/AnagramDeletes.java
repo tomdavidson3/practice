@@ -6,14 +6,6 @@ import java.util.Scanner;
 
 public class AnagramDeletes {
     public static int numberNeeded(String first, String second) {
-        if (first.isEmpty()) {
-            return second.length();
-        }
-
-        if (second.isEmpty()) {
-            return first.length();
-        }
-
         Map<Character, Integer> characterFrequenciesInFirst = computeCharacterFrequencies(first);
         Map<Character, Integer> characterFrequenciesInSecnd = computeCharacterFrequencies(second);
 
