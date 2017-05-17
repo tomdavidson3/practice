@@ -2,6 +2,8 @@ package com.prinkipia.examples.stanford;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,64 +12,76 @@ public class StronglyConnectComponent {
     private static class Graph {
         private List<Integer>[] adj;
         private int size;
+        int[] f;
+        int[] leader;
+        boolean[] visited;
+        int t = 0;
+        Integer s = null;
 
         public Graph(int size) {
             this.size = size;
             adj = new List[size + 1];
 
-            for (int i = 0; i <= size; i++) {
+            for (int i = 1; i < adj.length; i++) {
                 adj[i] = new LinkedList<>();
             }
+
+            f = new int[size + 1];
+            leader = new int[size + 1];
+            visited = new boolean[size + 1];
         }
 
         void addEdge(int v, int w) {
             adj[v].add(w);
         }
 
-        int size() {
-            return size;
-        }
-
         List<Integer> getVertices(int j) {
             return adj[j];
         }
-    }
 
-
-    static int t = 0;
-    static Integer s = null;
-    static int[] f;
-    static boolean[] visited;
-
-    private static void dfsLoop(final Graph graph) {
-        f = new int[graph.size() + 1];
-        visited = new boolean[graph.size() + 1];
-
-        for (int i = graph.size(); i > 0; i--) {
-            if (!visited[i]) {
-                s = i;
-                dfs(graph, i, visited);
+        int[] dfsLoop() {
+            for (int i = size; i > 0; i--) {
+                if (!visited[i]) {
+                    s = i;
+                    dfs(i);
+                }
             }
-            f[i] = s;
+            return f;
         }
-        System.out.println(f);
-    }
 
-    private static void dfs(Graph g, int i, boolean[] visited) {
-        visited[i] = true;
-        f[i] = s;
-        for (int j : g.getVertices(i)) {
-            dfs(g, j, visited);
+        int[] dfsLoop(int[] v) {
+            for (int i = size; i > 0; i--) {
+                if (!visited[v[i]]) {
+                    s = v[i];
+                    dfs(v[i]);
+                }
+            }
+            return v;
         }
-        t++;
-        f[i] = t;
+
+        void dfs(int i) {
+            visited[i] = true;
+            leader[i] = s;
+            for (int j : getVertices(i)) {
+                if (!visited[j]) {
+                    dfs(j);
+                }
+            }
+            t++;
+            f[i] = t;
+        }
+
+        public void replace(final int[] f) {
+
+        }
     }
 
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(new FileInputStream(args[0]));
+        int size = Integer.parseInt(args[1]);
 
-        Graph graph = new Graph(875714);
-        Graph graphReversed = new Graph(875714);
+        Graph graph = new Graph(size);
+        Graph graphReversed = new Graph(size);
 
         while (scanner.hasNext()) {
             int v = scanner.nextInt();
@@ -77,7 +91,10 @@ public class StronglyConnectComponent {
             graphReversed.addEdge(w, v);
         }
 
-        dfsLoop(graphReversed);
+        int[] f = graphReversed.dfsLoop();
+        graph.replace(f);
+
+        graph.dfsLoop(f);
     }
 
 }
