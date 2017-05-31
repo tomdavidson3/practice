@@ -20,45 +20,38 @@ public class MedianMaintence {
 
         int k = 0;
 
-        int first = scanner.nextInt();
-        int second = scanner.nextInt();
-
-        k += 2;
-
-        if (first < second) {
-            hHigh.add(second);
-            hLow.add(first);
-        }
-        else {
-            hHigh.add(first);
-            hLow.add(second);
-        }
-
         long sum = 0;
         while (scanner.hasNext()) {
             k++;
 
             int n = scanner.nextInt();
 
-            Integer loMedian = hLow.peek();
-
-            if (n < loMedian) {
+            int median;
+            if (k == 1) {
+                median = n;
                 hLow.add(n);
             }
             else {
-                hHigh.add(n);
-            }
+                Integer loMedian = hLow.peek();
 
-            if (Math.abs(hLow.size() - hHigh.size()) > 1) {
-                if (hLow.size() > hHigh.size()) {
-                    hHigh.add(hLow.poll());
+                if (n < loMedian) {
+                    hLow.add(n);
                 }
                 else {
-                    hLow.add(hHigh.poll());
+                    hHigh.add(n);
                 }
-            }
 
-            int median = findMedian(hLow, hHigh, k);
+                if (Math.abs(hLow.size() - hHigh.size()) > 1) {
+                    if (hLow.size() > hHigh.size()) {
+                        hHigh.add(hLow.poll());
+                    }
+                    else {
+                        hLow.add(hHigh.poll());
+                    }
+                }
+
+                median = findMedian(hLow, hHigh, k);
+            }
             sum += median;
         }
         System.out.println(sum % 10000);
