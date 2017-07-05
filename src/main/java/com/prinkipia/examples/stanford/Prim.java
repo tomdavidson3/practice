@@ -2,33 +2,36 @@ package com.prinkipia.examples.stanford;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
 public class Prim {
     static class Graph {
-        private Map<Integer, List<Edge>> adj;
+        private Map<Integer, Set<Edge>> adj;
 
         Graph(int size) {
             adj = new HashMap<>(size);
             for (int i = 1; i <= size; i++) {
-                adj.put(i, new ArrayList<>());
+                adj.put(i, new HashSet<>());
             }
         }
 
         void addEdge(int u, int v, int cost) {
-            List<Edge> fromEdges = adj.get(u);
-            fromEdges.add(new Edge(u, v, cost));
+            Edge edge = new Edge(u, v, cost);
+            Set<Edge> fromEdges = adj.get(u);
+            fromEdges.add(edge);
+
+            Set<Edge> toEdges = adj.get(v);
+            toEdges.add(new Edge(v, u, cost));
         }
 
-        List<Edge> getEdges(int vertex) {
+        Set<Edge> getEdges(int vertex) {
             return adj.get(vertex);
         }
     }
@@ -48,33 +51,68 @@ public class Prim {
         public int compareTo(final Edge o) {
             return Integer.compare(cost, o.cost);
         }
+
+        @Override
+        public String toString() {
+            return "Edge{" +
+                    "cost=" + cost +
+                    ", u=" + u +
+                    ", v=" + v +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            final Edge edge = (Edge) o;
+            return u == edge.u &&
+                    v == edge.v;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(u, v);
+        }
     }
 
     public static void mst(Graph g, int start) {
-        Set<Integer> unvisited = new HashSet<>();
-        unvisited.addAll(g.adj.keySet());
-        unvisited.remove(start);
+        Set<Integer> X = new HashSet<>();
+        X.add(start);
 
-        Queue<Edge> edgesAvailable = new PriorityQueue<>();
+        Set<Integer> V = new HashSet<>();
+        V.addAll(g.adj.keySet());
 
-        List<Edge> path = new ArrayList<>();
+        Set<Edge> T = new HashSet<>();
 
-        int cost = 0;
-        int vertex = start;
-        while (!unvisited.isEmpty()) {
-            for (Edge edge : g.getEdges(vertex)) {
-                if (unvisited.contains(edge.v)) {
-                    edgesAvailable.add(edge);
-                }
-            }
-            Edge minCostEdge = edgesAvailable.remove();
-            cost += minCostEdge.cost;
-            path.add(minCostEdge);
-            vertex = minCostEdge.v;
-            unvisited.remove(vertex);
+        while (!X.equals(V)) {
+            Edge e = findMin(g, X);
+            T.add(e);
+            X.add(e.v);
         }
 
-        System.out.printf("cost: " + cost);
+        int cost = 0;
+        for (Edge e : T) {
+            cost += e.cost;
+        }
+        System.out.println(cost);
+    }
+
+    private static Edge findMin(final Graph g, final Set<Integer> X) {
+        PriorityQueue<Edge> availableEdges = new PriorityQueue<>(Comparator.comparingInt(o -> o.cost));
+
+        for (int key : g.adj.keySet()) {
+            for (Edge e : g.getEdges(key)) {
+                if (X.contains(e.u) && !X.contains(e.v)) {
+                    availableEdges.add(e);
+                }
+            }
+        }
+        return availableEdges.remove();
     }
 
     public static void main(String[] args) throws FileNotFoundException {
