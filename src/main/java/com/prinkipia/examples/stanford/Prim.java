@@ -2,32 +2,38 @@ package com.prinkipia.examples.stanford;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
 public class Prim {
     static class Graph {
-        private int v;   // No. of vertices
-        private LinkedList<Edge>[] adj; //Adjacency List
+        private Map<Integer, List<Edge>> adj;
 
-        //Constructor
-        Graph(int v) {
-            this.v = v;
-            adj = new LinkedList[v];
-            for (int i = 0; i < v; ++i) {
-                adj[i] = new LinkedList<>();
+        Graph(int size) {
+            adj = new HashMap<>(size);
+            for (int i = 1; i <= size; i++) {
+                adj.put(i, new ArrayList<>());
             }
         }
 
-        //Function to add an edge into the graph
         void addEdge(int u, int v, int cost) {
-            adj[v].add(new Edge(u, v, cost));
+            List<Edge> fromEdges = adj.get(u);
+            fromEdges.add(new Edge(u, v, cost));
+        }
+
+        List<Edge> getEdges(int vertex) {
+            return adj.get(vertex);
         }
     }
 
-    static class Edge {
+    static class Edge implements Comparable<Edge> {
         int cost;
         int u;
         int v;
@@ -37,28 +43,38 @@ public class Prim {
             this.v = v;
             this.cost = cost;
         }
-    }
 
-    void mst(Graph g) {
-        Set<Integer> x = new LinkedHashSet<>(); // vertices spanned by tree-so-far T
-        x.add(g.adj[0].getFirst().u);
-
-        Set<Integer> t = new LinkedHashSet<>();
-
-        while (x.size() != 0) {
-            Edge e = findMin(x, g);
-            t.add(e);
-            x.add(e.vertex);
+        @Override
+        public int compareTo(final Edge o) {
+            return Integer.compare(cost, o.cost);
         }
-
     }
 
-    private Edge findMin(final Set<Integer> x, final Graph g) {
-        for (LinkedList<Edge> node : g.adj) {
-            for (Edge e : node) {
-                if (x.contains(e.vertex) && !x.contains(e.))
+    public static void mst(Graph g, int start) {
+        Set<Integer> unvisited = new HashSet<>();
+        unvisited.addAll(g.adj.keySet());
+        unvisited.remove(start);
+
+        Queue<Edge> edgesAvailable = new PriorityQueue<>();
+
+        List<Edge> path = new ArrayList<>();
+
+        int cost = 0;
+        int vertex = start;
+        while (!unvisited.isEmpty()) {
+            for (Edge edge : g.getEdges(vertex)) {
+                if (unvisited.contains(edge.v)) {
+                    edgesAvailable.add(edge);
+                }
             }
+            Edge minCostEdge = edgesAvailable.remove();
+            cost += minCostEdge.cost;
+            path.add(minCostEdge);
+            vertex = minCostEdge.v;
+            unvisited.remove(vertex);
         }
+
+        System.out.printf("cost: " + cost);
     }
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -75,6 +91,8 @@ public class Prim {
 
             g.addEdge(u, v, cost);
         }
+
+        mst(g, 1);
 
         System.out.println();
     }

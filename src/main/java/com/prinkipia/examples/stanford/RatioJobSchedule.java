@@ -10,6 +10,7 @@ public class RatioJobSchedule {
         int weight;
         int length;
         float ratio;
+        int completionTime;
 
         public Job(final int weight, final int length) {
             this.weight = weight;
@@ -29,12 +30,13 @@ public class RatioJobSchedule {
         }
         Arrays.sort(jobs, (o1, o2) -> Float.compare(o2.ratio, o1.ratio));
         long sum = 0;
-        for (int i = 0; i < numJobs; i++) {
-            int completionTime = 0;
-            for (int j = 0; j < i; j++) {
+        for (int i=0; i < numJobs; i++) {
+            int completionTime = jobs[i].length;
+            for (int j=0; j < i; j++) {
                 completionTime += jobs[j].length;
             }
-            sum += completionTime;
+            jobs[i].completionTime = completionTime;
+            sum += jobs[i].completionTime * jobs[i].weight;
         }
         System.out.println(sum);
     }

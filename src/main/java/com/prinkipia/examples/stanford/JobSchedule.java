@@ -11,6 +11,7 @@ public class JobSchedule {
         int weight;
         int length;
         int diff;
+        int completionTime;
 
         public Job(final int weight, final int length) {
             this.weight = weight;
@@ -44,15 +45,16 @@ public class JobSchedule {
             if (o1.diff == o2.diff) {
                 return Integer.compare(o2.weight, o1.weight);
             }
-            return Integer.compare(o1.diff, o2.diff);
+            return Integer.compare(o2.diff, o1.diff);
         });
         long sum = 0;
         for (int i=0; i < numJobs; i++) {
-            int completionTime = 0;
+            int completionTime = jobs[i].length;
             for (int j=0; j < i; j++) {
                 completionTime += jobs[j].length;
             }
-            sum += completionTime;
+            jobs[i].completionTime = completionTime;
+            sum += jobs[i].completionTime * jobs[i].weight;
         }
         System.out.println(sum);
     }
